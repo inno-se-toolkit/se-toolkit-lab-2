@@ -202,7 +202,7 @@ By the end of the lab:
 5. Create a PR to the `main` branch via [`GitHub`](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) ([tutorial](https://www.geeksforgeeks.org/git/creating-a-pull-request-on-any-public-repository-from-github-using-vs-code/)) or via [`GitHub Pull Requests`](https://code.visualstudio.com/docs/sourcecontrol/github#_pull-requests).
 6. Write an appropriate PR description following the PR template.
 7. [Link the PR](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) to the issue, e.g. `Closes #<issue number>`.
-8. Request a review of the PR from the collaborator.
+8. [Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review#requesting-reviews-from-collaborators-and-organization-members) a review of the PR from the collaborator.
 9. Address the comments, e.g., make fixes or ask to clarify the comment.
 10. Get the collaborator to approve the PR.
 11. Merge the PR to the `main` branch.
