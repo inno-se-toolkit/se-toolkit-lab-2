@@ -26,5 +26,6 @@
   // Set these settings to "true" if you want
   // Markdown and preview to scroll synchronously.
   "markdown.preview.scrollEditorWithPreview": false,
-  "markdown.preview.scrollPreviewWithEditor": false
+  "markdown.preview.scrollPreviewWithEditor": false,
+  "python-envs.pythonProjects": []
 }

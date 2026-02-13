@@ -1,0 +1,6 @@
+Host se-toolkit-vm
+   HostName 10.93.24.180
+   User root
+   IdentityFile se_toolkit_key
+   AddKeysToAgent yes
+   UseKeychain yes
