@@ -1,5 +1,4 @@
 # Lab setup
-
 - [Steps](#steps)
   - [1. Find a partner](#1-find-a-partner)
   - [2. Start creating a VM](#2-start-creating-a-vm)
