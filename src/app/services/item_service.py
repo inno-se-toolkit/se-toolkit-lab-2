@@ -202,6 +202,7 @@ def get_item_by_id_dfs_iterative(
     Uses depth-first search (DFS) in a specific order.
 
     See:
+    
     - [Depth-first search](https://en.wikipedia.org/wiki/Tree_traversal#Depth-first_search)
     - [Depth-first search example](https://en.wikipedia.org/wiki/Depth-first_search#Example)
 
@@ -211,6 +212,7 @@ def get_item_by_id_dfs_iterative(
         order: order in which to search
 
     Returns:
+
         The FoundItem if found, None otherwise.
     """
     counter = 0
