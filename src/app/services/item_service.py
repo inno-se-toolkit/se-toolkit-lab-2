@@ -234,7 +234,7 @@ def get_item_by_id_dfs_iterative(
                         for step in task.steps:
                             counter += 1
                             if step.id == item_id:
-                                return FoundItem(step, counter)
+                                return FoundItem(step, counter)#
         case PostOrder():
             # TODO implement
             pass
