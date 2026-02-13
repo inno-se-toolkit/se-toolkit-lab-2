@@ -1,4 +1,5 @@
 """Course Materials Service - FastAPI application.
+# Assume i fixed
 
 A read-only service that serves course-related items (courses, labs, tasks, steps)
 from JSON data files.
