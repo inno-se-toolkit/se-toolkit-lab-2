@@ -257,7 +257,7 @@ def get_item_by_id_dfs_recursive[T: Item](
             match order:
                 case PreOrder():
                     visited_nodes += 1
-                    if item.id == item_id:
+                    if item.id == item_id: #change there
                         return FoundItem(item=item, visited_nodes=visited_nodes)
                 case _:
                     pass
