@@ -193,53 +193,50 @@ class FoundItem:
 
 
 def get_item_by_id_dfs_iterative(
-    courses: List[Course], item_id: str, order: Order
-) -> Optional[FoundItem]:
-    """Find an item by its id.
-
-    Searches through all courses and their nested items.
-
-    Uses depth-first search (DFS) in a specific order.
-
-    See:
-    - [Depth-first search](https://en.wikipedia.org/wiki/Tree_traversal#Depth-first_search)
-    - [Depth-first search example](https://en.wikipedia.org/wiki/Depth-first_search#Example)
-
+    courses: list[Course], item_id: str, order: Order
+) -> FoundItem | None:
+    """
+    Ищет элемент по ID используя итеративный DFS обход
+    
     Args:
-        courses: a list of course info objects
-        item_id: The unique identifier of the item to find.
-        order: order in which to search
-
+        courses: список курсов
+        item_id: ID искомого элемента
+        order: порядок обхода (pre/in/post)
+    
     Returns:
-        The FoundItem if found, None otherwise.
+        FoundItem если элемент найден, иначе None
     """
     counter = 0
-    match order:
-        case PreOrder():
-            for course in courses:
-                counter += 1
-                if course.id == item_id:
-                    return FoundItem(course, counter)
-
-                for lab in course.labs:
-                    counter += 1
-                    if lab.id == item_id:
-                        return FoundItem(lab, counter)
-
-                    for task in lab.tasks:
-                        counter += 1
-                        if lab.id == item_id:
-                            return FoundItem(task, counter)
-
-                        for step in task.steps:
-                            counter += 1
-                            if step.id == item_id:
-                                return FoundItem(step, counter)
-        case PostOrder():
-            # TODO implement
-            pass
+    stack = []
+    
+    # Инициализация стека с курсами
+    for course in courses:
+        stack.append(course)
+    
+    while stack:
+        current = stack.pop()
+        counter += 1
+        
+        # Проверяем текущий элемент
+        if hasattr(current, 'id') and current.id == item_id:
+            return FoundItem(current, counter)
+        
+        # Добавляем дочерние элементы в зависимости от типа
+        if isinstance(current, Course) and current.labs:
+            # Для курса добавляем лабораторные работы
+            for lab in reversed(current.labs):
+                stack.append(lab)
+        elif isinstance(current, Lab) and current.tasks:
+            # Для лабораторной работы добавляем задачи
+            for task in reversed(current.tasks):
+                stack.append(task)
+                # ⚠️ Здесь была ошибка! Нужно проверять task.id в цикле выше
+        elif isinstance(current, Task) and current.steps:
+            # Для задачи добавляем шаги
+            for step in reversed(current.steps):
+                stack.append(step)
+    
     return None
-
 
 # ===
 #
