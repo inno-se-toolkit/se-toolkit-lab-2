@@ -19,7 +19,7 @@
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
 
-  "workbench.sideBar.location": "left",
+  "workbench.sideBar.location": "right",
 
   // Markdown settings
 
