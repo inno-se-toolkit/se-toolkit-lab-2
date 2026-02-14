@@ -12,90 +12,7 @@ from app.settings import settings
 from app.models.item import Item, Course, Lab, Task, Step
 
 # ===
-#
 # This module demonstrates the basics of functional programming.
-#
-# ---
-#
-# Approaches used here help:
-# - improve [static analysis](https://en.wikipedia.org/wiki/Static_program_analysis) such as:
-#   - [static type checking](https://en.wikipedia.org/wiki/Type_system#Type_checking);
-#   - [type inference](https://en.wikipedia.org/wiki/Type_inference).
-# - make the code testable and DRY;
-# - improve auto-completion based on the information about types.
-#
-# ---
-#
-# Approach 1:
-#
-# We heavily rely on static typing.
-#
-# We provide types almost everywhere to ensure each variable and function
-# has a known type other than `Any` or `Unknown`.
-#
-# One can sometimes understand what a function does just by looking at
-# its name, argument names and their types, and the result type.
-#
-# Unlike comments that can get obsolete, the documentation based on types
-# is usually always up to date.
-# Running a type checker helps ensure that the program is well-typed.
-#
-# Running a type checker before running an extensively typed program
-# helps eliminate entire classes of problems that can happen at runtime.
-#
-# ---
-#
-# Approach 2:
-#
-# This module follows the principles described in the article
-# [Functional Core, Imperative Shell](https://testing.googleblog.com/2025/10/simplify-your-code-functional-core.html).
-#
-# We express the main logic using pure, testable functions whose output depends
-# only on their arguments. These functions don't cause any side effects such as
-# input-output or external state mutation.
-#
-# After that, we define impure functions that construct arguments for the pure
-# functions and cause side effects such as reading a file.
-#
-# ---
-#
-# Approach 3:
-#
-# We use Python [generics](https://typing.python.org/en/latest/reference/generics.html)
-# a.k.a. [Parametric polymorphism](https://en.wikipedia.org/wiki/Parametric_polymorphism)
-# ([examples](https://rosettacode.org/wiki/Parametric_polymorphism#Python))
-# to write [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) reusable code.
-#
-# We also use generics to tell other developers where a function can
-# and where it can't be used with the help of the type checker.
-#
-# ---
-#
-# Approach 4:
-#
-# We use the algebraic data type `Item` (see `src/app/models/item.py` for details)
-# to constrain which types a variable of type `Item` can have.
-# Hint: it can have any type from the `Item` union, i.e., `Class`, `Lab`, `Task`, `Step`.
-#
-# We also use the algebraic data type `Order` (see `src/app/models/order.py`)
-# to specify the two orders of the depth-first [tree traversal](https://en.wikipedia.org/wiki/Tree_traversal).
-#
-# ===
-
-# ===
-#
-# This is a [generic function](https://typing.python.org/en/latest/reference/generics.html#generic-functions).
-# This function works with any subtypes of `Item`.
-# That is, it works only with subtypes in the `Item` union.
-# There are only four such types: `Class`, `Lab`, `Step`, `Task`.
-# The function won't work with any other type such as `int` or `BaseItem`.
-#
-# The type checker will show an error when people try to write
-# code where this functions takes as argument `items` with type `List[int]`.
-# People will see an error before running the code.
-#
-# That's how one can communicate constraints using types.
-#
 # ===
 
 
@@ -108,18 +25,6 @@ def find_by_id[T: Item](items: List[T], item_id: str) -> Optional[T]:
         if item.id == item_id:
             return item
     return None
-
-
-# ===
-#
-# Each of these functions uses `find_by_id`.
-# In each function, `find_by_id` has `T` replaced with a particular type
-# based on the type of its arguments.
-#
-# When `courses` has type `List[Course]`,
-# the argument of `find_by_id` called `items` also has the type `List[Course]`.
-#
-# ===
 
 
 def get_course_by_id(courses: List[Course], course_id: str) -> Optional[Course]:
@@ -136,11 +41,6 @@ def get_task_by_id(lab: Lab, task_id: str) -> Optional[Task]:
 
 def get_step_by_id(task: Task, step_id: str) -> Optional[Step]:
     return find_by_id(items=task.steps, item_id=step_id)
-
-
-# ===
-#
-# ===
 
 
 def get_course_by_path(courses: List[Course], course_id: str) -> Optional[Course]:
@@ -176,11 +76,6 @@ def get_step_by_path(
     return None
 
 
-# ===
-#
-# ===
-
-
 @final
 @dataclass
 class FoundItem:
@@ -195,24 +90,7 @@ class FoundItem:
 def get_item_by_id_dfs_iterative(
     courses: List[Course], item_id: str, order: Order
 ) -> Optional[FoundItem]:
-    """Find an item by its id.
-
-    Searches through all courses and their nested items.
-
-    Uses depth-first search (DFS) in a specific order.
-
-    See:
-    - [Depth-first search](https://en.wikipedia.org/wiki/Tree_traversal#Depth-first_search)
-    - [Depth-first search example](https://en.wikipedia.org/wiki/Depth-first_search#Example)
-
-    Args:
-        courses: a list of course info objects
-        item_id: The unique identifier of the item to find.
-        order: order in which to search
-
-    Returns:
-        The FoundItem if found, None otherwise.
-    """
+    """Find an item by its id using DFS."""
     counter = 0
     match order:
         case PreOrder():
@@ -228,7 +106,7 @@ def get_item_by_id_dfs_iterative(
 
                     for task in lab.tasks:
                         counter += 1
-                        if lab.id == item_id:
+                        if task.id == item_id:
                             return FoundItem(task, counter)
 
                         for step in task.steps:
@@ -239,11 +117,6 @@ def get_item_by_id_dfs_iterative(
             # TODO implement
             pass
     return None
-
-
-# ===
-#
-# ===
 
 
 def get_item_by_id_dfs_recursive[T: Item](
@@ -299,20 +172,7 @@ def get_item_by_id_dfs_recursive[T: Item](
     return get_item_by_id_dfs_recursive_(items=items, item_id=item_id, order=order)
 
 
-# ===
-#
-# `TypeAdapter` wraps another type and makes it look like `BaseModel`.
-# See [docs](https://docs.pydantic.dev/latest/concepts/type_adapter/)
-#
-# ===
-
 CoursesAdapter = TypeAdapter(type=List[Course])
-
-# ===
-#
-# These are impure functions that cause side effects such as reading a file.
-#
-# ===
 
 
 def read_courses() -> List[Course]:
