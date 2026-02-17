@@ -91,11 +91,19 @@ Method 2:
 
    [Run using the `VS Code Terminal`](../../appendix/vs-code.md#run-a-command-using-the-vs-code-terminal):
 
+   `Linux` / `WSL`:
+
+   ```terminal
+   source .env.secret && ss -tlnp sport = :$PORT
+   ```
+
+   `macOS`:
+
    ```terminal
    source .env.secret && sudo lsof -i :$PORT
    ```
 
-2. If the command produces **no output**, the port is free.
+2. If the command produces **no output** (or only a header line), the port is free.
 3. Otherwise, you need to use a [free port](#7-use-a-free-port).
 
 ### 7. Use a free port
@@ -151,6 +159,14 @@ Method 2:
 > Run if you see the `Address already in use` error after trying to run the web server.
 
 1. [Run using the `VS Code Terminal`](../../appendix/vs-code.md#run-a-command-using-the-vs-code-terminal):
+
+   `Linux` / `WSL`:
+
+   ```terminal
+   source .env.secret && fuser -k $PORT/tcp
+   ```
+
+   `macOS`:
 
    ```terminal
    source .env.secret && kill $(sudo lsof -ti :$PORT)
